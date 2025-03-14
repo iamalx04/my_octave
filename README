@@ -75,17 +75,7 @@ este sa mut matricea pe care vreau sa o sterg la final, iar mai apoi sa fac
 eliberarea aferenta. Astfel, nu am afectat nicio matrice din vector, iar rezul-
 tatul a fost cel dorit.
 
-10) Functia de inmultire a doua matrice prin algoritmul lui Strassen
-Aici, am incercat o varianta de cod, insa a esuat din cauza erorilor de
-segmentation fault. Mi-am propus sa definesc un alt vector de matrici pentru a 
-ma incadra in numarul de linii impus pentru fiecare, acesta continand toate ma-
-tricile mentionate in documentatie, plus inca 2 matrici auxiliare. Pe urma,
-am definit 2 functii de suma si diferenta care aduna si scad 2 matrici si fur-
-nizeaza adresa matricii rezultat. Si aici am decis sa impart problema in 2
-functii specifice pentru algoritmul Strassen, acestea reprezentand partea de
-initializare a inmultirii si partea de recursivitate.
-
-11) Eliberarea tuturor matricelor din memorie
+10) Eliberarea tuturor matricelor din memorie
 Ultima optiune, „Q”, inchide bucla structurii repetitive care a mentinut meniul
 de optiuni activ si elibereaza memoria. Intai eliberez fiecare matrice in 
 parte, apoi fiecare pointer al matricelor, si in final eliberez pointerul care
