@@ -302,127 +302,6 @@ void inmultire(int ****vec, int **lines, int **columns, int *n)
 	(*n)++;
 }
 
-/*
-// Inmultirea prin algoritmul lui Strassen
-
-// Functia recursiva
-void strassen_rec(int **m1, int **m2, int dim, int **rez)
-{
-if(dim==1){
-	int **mat = (int **) malloc(dim * sizeof(int*));
-	for(int i = 0; i < dim; i++)
-		mat[i] = (int *)malloc(dim * sizeof(int));
-	mat[0][0] = (m1[0][0] * m2[0][0]) % modulo;
-	if(mat[0][0] < 0)
-	mat[0][0]+= modulo;
-	rez=mat;
-} else {
-	int ***matrici;
-	matrici = (int ***)malloc(21 * sizeof(int**));
-	for (int i = 0; i < 8; i++) {
-		matrici[i] = (int **)malloc(dim/2 * sizeof(int *));
-		for (int j = 0; j < dim/2; j++)
-			matrici[i][j] = (int *)malloc(dim/2 * sizeof(int *));
-	}
-	for(int j = 0; j < dim / 2; j++)
-		for(int k = 0; k < dim / 2; k++) {
-			matrici[0][j][k] = m1[j][k]; //A1
-			matrici[1][j][k] = m1[j][k+dim/2]; //A2
-			matrici[2][j][k] = m1[j+dim/2][k]; //A3
-			matrici[3][j][k] = m1[j+dim/2][k+dim/2]; //A4
-			matrici[4][j][k] = m2[j][k]; //B1
-			matrici[5][j][k] = m2[j][k+dim/2]; //B2
-			matrici[6][j][k] = m2[j+dim/2][k]; //B3
-			matrici[7][j][k] = m2[j+dim/2][k+dim/2]; //B4
-			}
-	printf("1\n");
-	matrici[19] = sum_mat(matrici[0], matrici[3], dim/2);
-	matrici[20] = sum_mat(matrici[4], matrici[7], dim/2);
-	strassen_rec(matrici[19], matrici[20], dim/2, matrici[12]); //M1
-	free_mat2(matrici[19], dim/2);
-	free_mat2(matrici[20], dim/2);
-	matrici[19] = sum_mat(matrici[2], matrici[3], dim/2);
-	strassen_rec(matrici[19], matrici[4], dim/2, matrici[13]); //M2
-	free_mat2(matrici[19], dim/2);
-	matrici[19] = dif_mat(matrici[5], matrici[7], dim/2);
-	strassen_rec(matrici[0], matrici[19], dim/2, matrici[14]); //M3
-	free_mat2(matrici[19], dim/2);
-	matrici[19] = dif_mat(matrici[6], matrici[4], dim/2);
-	strassen_rec(matrici[3], matrici[19], dim/2, matrici[15]); //M4
-	free_mat2(matrici[19], dim/2);
-	matrici[19] = sum_mat(matrici[0], matrici[1], dim/2);
-	strassen_rec(matrici[19], matrici[7], dim/2, matrici[16]); //M5
-	free_mat2(matrici[19], dim/2);
-	matrici[19] = dif_mat(matrici[2], matrici[0], dim/2);
-	matrici[20] = sum_mat(matrici[4], matrici[5], dim/2);
-	strassen_rec(matrici[19], matrici[20], dim/2, matrici[17]); //M6
-	free_mat2(matrici[19], dim/2);
-	free_mat2(matrici[20], dim/2);
-	matrici[19] = dif_mat(matrici[1], matrici[3], dim/2);
-	matrici[20] = sum_mat(matrici[6], matrici[7], dim/2);
-	strassen_rec(matrici[19], matrici[20], dim/2, matrici[18]); //M7
-	free_mat2(matrici[19], dim/2);
-	free_mat2(matrici[20], dim/2);
-	matrici[9] = sum_mat(matrici[14], matrici[16], dim/2); //C2
-	matrici[10] = sum_mat(matrici[13], matrici[15], dim/2); //C3
-	matrici[19] = sum_mat(matrici[12], matrici[15], dim/2);
-	matrici[20] = dif_mat(matrici[19], matrici[16], dim/2);
-	matrici[8] = sum_mat(matrici[20], matrici[18], dim/2); //C1
-	free_mat2(matrici[19], dim/2);
-	free_mat2(matrici[20], dim/2);
-	matrici[19] = dif_mat(matrici[12], matrici[13], dim/2);
-	matrici[20] = dif_mat(matrici[19], matrici[14], dim/2);
-	matrici[11] = sum_mat(matrici[20], matrici[17], dim/2); //C4
-	free_mat2(matrici[19], dim/2);
-	free_mat2(matrici[20], dim/2);
-
-	for (int i = 0; i < dim/2; i++)
-		for (int j = 0; j < dim/2; j++)
-			rez[i][j] = matrici[8][i][j];
-
-	for (int i = 0; i < dim/2; i++)
-		for (int j = dim/2; j < dim; j++)
-			rez[i][j] = matrici[9][i][j - (dim / 2)];
-
-	for (int i = dim/2; i < dim; i++)
-		for (int j = 0; j < dim/2; j++)
-			rez[i][j] = matrici[10][i - (dim / 2)][j];
-
-	for (int i = dim/2; i < dim; i++)
-		for (int j = dim/2; j < dim; j++)
-			rez[i][j] = matrici[11][i - (dim /2)][j - (dim / 2)];
-
-	for (int i = 0; i < 21; i++) { //eliberarea totala a memoriei
-		for (int j = 0; j < dim; j++)
-		free(matrici[i][j]);
-	free(matrici[i]);
-}
-	free(matrici);
-}
-
-}
-
-// Functia de initializare
-void strassen(int ***v, int *linii, int *coloane, int *n)
-{
-int nr_mat, nr_mat1, dim, **rezultat = NULL;
-scanf("%d %d", &nr_mat, &nr_mat1);
-if (nr_mat >= *n || nr_mat1 >= *n || nr_mat < 0 || nr_mat1 < 0) {
-	printf("No matrix with the given index\n");
-	return;
-}
-if (coloane[nr_mat] != linii[nr_mat1]) {
-	printf("Cannot perform matrix multiplication\n");
-	return;
-}
-
-dim = linii[nr_mat];
-
-strassen_rec(v[nr_mat], v[nr_mat1], dim, rezultat);
-
-}
-*/
-
 int main(void)
 {
 int ***v, *linii, *coloane, *linii1, *coloane1, ***v1; char op;
@@ -497,8 +376,6 @@ while (op != 'Q') {
 			printf("No matrix with the given index\n");
 		else
 			free_mat(v, &n, nr_mat, linii, coloane);
-	} else if (op == 'S') { // inmultirea matricilor cu algortimul lui Strassen
-		// strassen(v, linii, coloane, &n);
 	} else {
 		printf("Unrecognized command\n");
 	}
