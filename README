@@ -1,0 +1,93 @@
+//Copyright Istrate Alexandru-Daniel 314CAa 2023-2024
+
+Pentru a rezolva taskurile acestei teme, provocarea a fost sa gasesc o metoda
+eficienta de a pastra si de a lucra cu un numar mai mare de matrici, alocate
+dinamic. Astfel, am declarat si alocat un vector tridimensional care pastrea-
+za adresele tuturor matricilor citite. De asemenea, am definit 2 vectori
+caracteristici in care pastrez dimensiunile fiecarei matrice. Apot, citesc
+prima optiune si verific daca se regaseste printre cele corecte. De mentionat
+este ca, pentru fiecare functie unde era necesar, am verificat indicii cititi
+de la tastatura, cat si dimensiunile matricelor pentru a nu avea probleme in
+rezolvarea problemei.
+
+1) Functia de adaugare a unei matrice in memorie
+Aceasta operatie presupune citirea dimensiunilor matricei si a elementelor
+sale. Insa, in ceea ce priveste memoria, initial am incercat sa utilizez
+functia "realloc" pentru a-mi mari vectorii folositi, insa, dupa o 
+documentare mai minutioasa, am decis sa aloc un alt vector cu dimensiunea
+necesara, ca mai apoi toate elementele din vectorul initial sa fie aduse aici,
+sirul initial fiind eliberat, cu exceptia pointerului care memora inceputul
+sirului, acesta trimitand catre noul sir care are dimensiunea potrivita.
+Astfel, am evitat eventualele erori de segmentation fault si am reusit sa
+scap de toate problemele in ceea ce priveste citirea.
+
+2) Functia de afisare a dimensiunilor unei matrice
+Pentru acest lucru, tot ce am facut a fost sa afisez dimensiunile matricei
+al carei indice a fost citit de la tastatura, accesand vectorii caracteristici
+ce pastrau aceasta informatie.
+
+3) Functia de afisare a unei matrice
+Aici am decis sa folosesc o functie care primeste acces la vectorul de matrici,
+la indicele matricei de afisat, si dimensiunile acesteia. Apoi, se realizeaza 
+afisarea clasica a unei matrice, doar ca adaptata la pointeri.
+
+4) Functia de redimensionarea a unei matrice
+In acest caz, se citeste numarul de linii dupa care se face redimensionarea si
+liniile aferente, apoi numarul de coloane si coloanele aferente. Intr-o noua 
+matrice, mut toate elementele care trebuie sa ramana in matrice, apoi eliberez
+matricea veche pentru a putea sa o schimb cu cea noua.
+
+5) Functia de inmultire a doua matrice
+Pentru ca main-ul depasea numarul de linii impus, functia de inmultire a 
+matricelor este impartita in doua. Prima parte, cea de initializare, citeste
+datele necesare, face verificarile aferente si reatribuirile corespunzatoare
+astfel incat noua matrice sa poata fi adaugata in spatiul potrivit. De 
+asemenea, in aceasta etapa de ia matricea rezultata in urma inmultirii si 
+este asezata pe indicele corespunzator. Cea de-a doua parte reprezinta inmul-
+tirea efectiva, in care se declara o matrice rezultat, iar elementele acesteia
+iau valorile potrivite, conform algoritmului standard de inmultire.
+
+6) Functia de sortare a matricilor
+In aceasta functie am calculat suma tuturor elementelor intr-un vector carac-
+teristic, alocat dinamic, si am sortat prin metoda selectiei acest sir de sume.
+In timp ce mutam elementele din vectorul suma, am mutat si elementele din vec-
+torul de matrici, pentru a face asezarile corespunzatoare.
+
+7) Functia de transpunere a unei matrice
+Aici, am decis sa aloc dinamic o matrice, dandu-i dimensiunile invers fata de
+cea care trebuie transpusa. Pe urma, cu ajutorul catorva structuri repetitive,
+am luat fiecare element de pe liniile matricei initiale si l-am pus pe coloana
+potrivita din matricea rezultat. In final, am eliberat matricea initiala si am
+inlocuit-o cu cea rezultat in urma operatiei.
+
+8) Functia de ridicare la putere a unei matrice in timp logaritmic
+Ridicarea la putere este o functie recursiva care, in loc sa inmulteasca de mai
+multe ori aceeasi matrice, imparte acest procedeu in altele mai mici, calculand
+puteri mai mici si inmultindu-le intre ele. Astfel, am observat ca pentru pu-
+teri impare, functia trebuie sa inmulteasca matricea la puterea anterioara cu
+ea insasi, iar pe putere para sa inmulteasca matricea initiala la jumatatea 
+puterii pare de doua ori. Cazul de final este cel in care puterea devine 0, 
+rezultatul fiind matricea identitate.
+
+9) Functia de eliberare a memoriei unei matrice
+In cadrul acestei functii, am reusit sa observ ca metoda cea mai potrivita
+este sa mut matricea pe care vreau sa o sterg la final, iar mai apoi sa fac
+eliberarea aferenta. Astfel, nu am afectat nicio matrice din vector, iar rezul-
+tatul a fost cel dorit.
+
+10) Functia de inmultire a doua matrice prin algoritmul lui Strassen
+Aici, am incercat o varianta de cod, insa a esuat din cauza erorilor de
+segmentation fault. Mi-am propus sa definesc un alt vector de matrici pentru a 
+ma incadra in numarul de linii impus pentru fiecare, acesta continand toate ma-
+tricile mentionate in documentatie, plus inca 2 matrici auxiliare. Pe urma,
+am definit 2 functii de suma si diferenta care aduna si scad 2 matrici si fur-
+nizeaza adresa matricii rezultat. Si aici am decis sa impart problema in 2
+functii specifice pentru algoritmul Strassen, acestea reprezentand partea de
+initializare a inmultirii si partea de recursivitate.
+
+11) Eliberarea tuturor matricelor din memorie
+Ultima optiune, „Q”, inchide bucla structurii repetitive care a mentinut meniul
+de optiuni activ si elibereaza memoria. Intai eliberez fiecare matrice in 
+parte, apoi fiecare pointer al matricelor, si in final eliberez pointerul care
+pastra adresa de inceput. De asemenea, se elibereaza si vectorul de linii si
+coloane, deoarece matricile nu mai exista in acest punct.
